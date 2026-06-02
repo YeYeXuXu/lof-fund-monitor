@@ -1,4 +1,4 @@
-name: LOF Fund Monitor 09:30-18:00
+name: LOF Fund Monitor 09:30-15:00
 
 on:
   schedule:
@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       run_until:
-        description: '北京时间结束时间，例如 18:00；测试时可填 14:20'
+        description: '北京时间结束时间，例如 15:00；测试时可填 14:20'
         required: false
-        default: '18:00'
+        default: '15:00'
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   monitor:
-    name: Run LOF monitor until 18:00 CST
+    name: Run LOF monitor until 15:00 CST
     runs-on: ubuntu-latest
     timeout-minutes: 340
 
@@ -35,7 +35,7 @@ jobs:
       PREMIUM_UPPER: ${{ vars.PREMIUM_UPPER }}
       DISCOUNT_LOWER: ${{ vars.DISCOUNT_LOWER }}
       MIN_TURNOVER: ${{ vars.MIN_TURNOVER }}
-      RUN_UNTIL: ${{ inputs.run_until || '18:00' }}
+      RUN_UNTIL: ${{ inputs.run_until || '15:00' }}
 
     steps:
       - name: Checkout repository
