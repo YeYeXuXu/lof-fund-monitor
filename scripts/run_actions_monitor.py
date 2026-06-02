@@ -4,7 +4,7 @@
 The normal server.py entrypoint tries to open a browser, which is useful locally
 but unnecessary in GitHub Actions. This runner imports the app, starts it on
 127.0.0.1, lets the project's built-in periodic tasks run, and shuts down at
-18:00 Asia/Shanghai by default.
+15:00 Asia/Shanghai by default.
 """
 from __future__ import annotations
 
@@ -27,12 +27,12 @@ CST = ZoneInfo("Asia/Shanghai")
 
 
 def _parse_hhmm(value: str) -> tuple[int, int]:
-    value = (value or "18:00").strip()
+    value = (value or "15:00").strip()
     try:
         hour_text, minute_text = value.split(":", 1)
         hour, minute = int(hour_text), int(minute_text)
     except Exception as exc:
-        raise ValueError(f"结束时间必须是 HH:MM，例如 18:00；当前值: {value!r}") from exc
+        raise ValueError(f"结束时间必须是 HH:MM，例如 15:00；当前值: {value!r}") from exc
     if not (0 <= hour <= 23 and 0 <= minute <= 59):
         raise ValueError(f"结束时间越界: {value!r}")
     return hour, minute
@@ -45,7 +45,7 @@ def _deadline() -> datetime:
         minutes = max(1, int(after_minutes))
         return now + timedelta(minutes=minutes)
 
-    end_time = os.environ.get("ACTIONS_END_TIME", "18:00") or "18:00"
+    end_time = os.environ.get("ACTIONS_END_TIME", "15:00") or "15:00"
     hour, minute = _parse_hhmm(end_time)
     return now.replace(hour=hour, minute=minute, second=0, microsecond=0)
 
